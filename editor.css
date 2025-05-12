@@ -1,0 +1,387 @@
+[x-cloak] {
+    display: none !important;
+}
+
+.editor-modal * {
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+.editor-modal-title {
+    text-transform: capitalize;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    padding-top: 5px;
+}
+
+/* Modal Editor Styles */
+.editor-modal-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.editor-modal {
+    background-color: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 800px;
+    height: 700px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.editor-modal-header {
+    background-color: white;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.editor-modal-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin: 0;
+}
+
+.editor-close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    font-size: 24px;
+    line-height: 1;
+    padding: 0;
+}
+
+.editor-close-button:hover {
+    color: #333;
+}
+
+.editor-modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+    background-color: #F8F8F8;
+}
+
+.editor-form-group {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 4px;
+}
+
+.editor-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 400;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.editor-type {
+    font-size: 13px;
+    color: #888;
+    font-weight: normal;
+    text-transform: lowercase;
+    text-align: right;
+    display: none;
+}
+
+.editor-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.editor-input:focus {
+    border-color: #ccc;
+    outline: none;
+}
+
+.editor-textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    min-height: 200px;
+    font-family: inherit;
+    resize: none;
+}
+
+.editor-textarea:focus {
+    border-color: #ccc;
+    outline: none;
+}
+
+.editor-code {
+    font-family: monospace;
+    white-space: pre-wrap;
+}
+
+.editor-checkbox {
+    margin-right: 8px;
+}
+
+.editor-checkbox-label {
+    display: flex;
+    align-items: center;
+}
+
+.editor-nested-container {
+    margin-bottom: 15px;
+}
+
+.editor-nested-note {
+    font-size: 13px;
+    font-style: italic;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.editor-edit-button {
+    background-color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #333;
+    border: 1px solid #DDD;
+}
+
+.editor-edit-button:hover {
+    background-color: #e9ecef;
+}
+
+.editor-edit-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.editor-array-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.editor-array-index {
+    font-size: 12px;
+    color: #777;
+    width: 30px;
+}
+
+.editor-array-content {
+    flex: 1;
+}
+
+.editor-modal-footer {
+    background-color: white;
+    padding: 15px 20px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: flex-end;
+    position: sticky;
+    bottom: 0;
+}
+
+.editor-button {
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.editor-button-secondary {
+    background-color: white;
+    border: 1px solid #d0d7de;
+    color: #24292f;
+    margin-right: 12px;
+}
+
+.editor-button-secondary:hover {
+    background-color: #f6f8fa;
+}
+
+.editor-button-primary {
+    background-color: #333;
+    border: 1px solid #333;
+    color: white;
+}
+
+.editor-button-primary:hover {
+    background-color: #555;
+}
+
+.editor-array-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.editor-array-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.editor-array-title {
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+    font-size: 16px;
+}
+
+.editor-image-upload {
+    width: 100%;
+    margin-top: 10px;
+    position: relative;
+}
+
+.editor-image-upload input[type="file"] {
+    position: absolute;
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.editor-image-upload label {
+    display: inline-block;
+    background-color: white;
+    border: 1px solid #e7e7e5;
+    color: #333;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.editor-image-upload label:hover {
+    background-color: #e9ecef;
+}
+
+.editor-image-preview {
+    margin-top: 10px;
+    max-width: 25%;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.editor-image-preview img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+}
+
+.editor-image-controls {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.editor-breadcrumb {
+    font-size: 14px;
+}
+
+.editor-breadcrumb button {
+    background-color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    color: #333;
+    font-weight: 500;
+    border: 1px solid #DDD;
+}
+
+.editor-breadcrumb button:hover {
+    background-color: #e9ecef;
+}
+
+.editor-fade-in {
+    transition: opacity 0.3s ease;
+}
+
+.editor-fade-out {
+    transition: opacity 0.2s ease;
+}
+
+.editor-fade-start {
+    opacity: 0;
+}
+
+.editor-fade-end {
+    opacity: 1;
+}
+
+.editor-slide-in {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.editor-slide-out {
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.editor-slide-start {
+    opacity: 0;
+    transform: scale(0.95);
+}
+
+.editor-slide-end {
+    opacity: 1;
+    transform: scale(1);
+}
+
+[data-edit] {
+    position: relative;
+}
+
+[data-edit]:hover {
+    outline: 2px dashed #0066cc;
+    outline-offset: 2px;
+    cursor: pointer;
+}
+
+[data-edit]:hover::before {
+    content: "Edit";
+    position: absolute;
+    top: -18px;
+    left: 0;
+    background: #0066cc;
+    color: white;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    z-index: 100;
+    pointer-events: none;
+    font-family: "Inter", sans-serif;
+}
