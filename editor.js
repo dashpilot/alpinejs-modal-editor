@@ -4,12 +4,6 @@ fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600
 fontLink.rel = 'stylesheet';
 document.head.appendChild(fontLink);
 
-// Add CSS file
-const cssLink = document.createElement('link');
-cssLink.href = 'editor.css';
-cssLink.rel = 'stylesheet';
-document.head.appendChild(cssLink);
-
 // Add modal HTML to the page
 const modalHTML = `
 <div x-data="modalEditor" x-cloak>
