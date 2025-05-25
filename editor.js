@@ -172,9 +172,10 @@ const modalHTML = `
                                         }
                                         formData.unshift(emptyItem); 
                                     }"
-                                    class="editor-edit-button" title="Add New Item at Beginning"
-                                    :disabled="formData.length === 0">
-                                    + Add to Beginning
+                                    class="editor-edit-button" title="Add New Item at Start"
+                                    :disabled="formData.length === 0"
+                                    style="min-width: 120px;">
+                                    + Add to Start
                                 </button>
                             </div>
                         </div>
@@ -328,7 +329,9 @@ const modalHTML = `
                                     }
                                     formData.push(emptyItem); 
                                 }"
-                                class="editor-edit-button" :disabled="formData.length === 0">
+                                class="editor-edit-button"
+                                :disabled="formData.length === 0"
+                                style="min-width: 120px;">
                                 + Add to End
                             </button>
                         </div>
