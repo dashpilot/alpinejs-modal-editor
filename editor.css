@@ -126,6 +126,7 @@
     min-height: 200px;
     font-family: inherit;
     resize: none;
+    line-height: 1.7;
 }
 
 .editor-textarea:focus {
@@ -383,17 +384,17 @@
     font-family: "Inter", sans-serif;
 }
 
-/* Icon button style for array controls */
+/* Smaller icon button style for array controls */
 .editor-icon-button {
     background: #f3f3f6;
     border: none;
     border-radius: 50%;
-    width: 48px;
-    height: 48px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 16px;
+    margin-right: 8px;
     cursor: pointer;
     transition: background 0.2s;
     padding: 0;
@@ -415,4 +416,13 @@
 .editor-icon-button svg {
     display: block;
     stroke: #222;
+    width: 18px;
+    height: 18px;
+}
+
+.editor-button-row {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
 }
