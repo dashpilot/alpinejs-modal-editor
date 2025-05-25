@@ -74,13 +74,13 @@ const modalHTML = `
                             <div class="editor-form-group">
                                 <div class="editor-label">
                                     <span x-text="key"></span>
-                                    <span class="editor-type" x-text="\`(\${typeof value})\`"></span>
+                                    <span class="editor-type" x-text="'(' + (typeof value) + ')' "></span>
                                 </div>
 
                                 <!-- Nested Object -->
                                 <template x-if="isComplexObject(value)">
                                     <div>
-                                        <button @click="openEditor(\`\${currentPath}.\${key}\`, true)"
+                                        <button @click="openEditor(currentPath + '.' + key, true)"
                                             class="editor-edit-button">
                                             Edit Settings
                                         </button>
@@ -90,7 +90,7 @@ const modalHTML = `
                                 <!-- Array -->
                                 <template x-if="isArray(value)">
                                     <div>
-                                        <button @click="openEditor(\`\${currentPath}.\${key}\`, true)"
+                                        <button @click="openEditor(currentPath + '.' + key, true)"
                                             class="editor-edit-button">
                                             Edit Items
                                         </button>
@@ -183,7 +183,9 @@ const modalHTML = `
                                         >
                                             <polyline points="9 18 15 12 9 6"></polyline>
                                         </svg>
-                                        <h5 class="editor-array-title">Item <span x-text="index + 1"></span></h5>
+                                        <h5 class="editor-array-title">
+                                            <span x-text="item.title ? item.title : 'Item ' + (index + 1)"></span>
+                                        </h5>
                                     </div>
                                     <div class="editor-button-row">
                                         <button
@@ -203,92 +205,96 @@ const modalHTML = `
                                         </button>
                                     </div>
                                 </div>
-
+                                <!-- Only show divider and spacing if expanded -->
+                                <template x-if="expandedIndex === index">
+                                    <hr style="margin: 16px 0; border: none; border-top: 1px solid #e5e7eb;" />
+                                </template>
                                 <!-- Complex Object Item -->
                                 <template x-if="isComplexObject(item)">
                                     <div x-show="expandedIndex === index" x-transition:enter="editor-fade-in" x-transition:leave="editor-fade-out">
                                         <div>
                                             <template x-for="(propValue, propKey) in item" :key="propKey">
-                                                <div class="editor-form-group">
-                                                    <div class="editor-label">
-                                                        <span x-text="propKey"></span>
-                                                        <span class="editor-type" x-text="\`(\${typeof propValue})\`"></span>
+                                                <template x-if="propKey !== 'id'">
+                                                    <div class="editor-form-group">
+                                                        <div class="editor-label">
+                                                            <span x-text="propKey"></span>
+                                                            <span class="editor-type" x-text="'(' + (typeof propValue) + ')' "></span>
+                                                        </div>
+
+                                                        <!-- Nested Complex Objects -->
+                                                        <template x-if="isComplexObject(propValue) || isArray(propValue)">
+                                                            <div>
+                                                                <button
+                                                                    @click="openEditor(currentPath + '.' + index + '.' + propKey, true)"
+                                                                    class="editor-edit-button">
+                                                                    Edit Settings
+                                                                </button>
+                                                            </div>
+                                                        </template>
+
+                                                        <!-- Text Input (Non-Image) -->
+                                                        <template
+                                                            x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue) === 'text' && propKey !== 'image'">
+                                                            <input type="text" x-model="formData[index][propKey]"
+                                                                class="editor-input">
+                                                        </template>
+
+                                                        <!-- Image Input -->
+                                                        <template
+                                                            x-if="!isComplexObject(propValue) && !isArray(propValue) && propKey === 'image'">
+                                                            <div>
+                                                                <div class="editor-image-upload">
+                                                                    <input type="file" accept="image/*"
+                                                                        @change="handleImageUpload($event, index + '.' + propKey)"
+                                                                        :id="'image-upload-' + index + '-' + propKey">
+                                                                    <label
+                                                                        :for="'image-upload-' + index + '-' + propKey">Upload
+                                                                        Image</label>
+                                                                </div>
+                                                                <div class="editor-image-preview"
+                                                                    x-show="formData[index][propKey]">
+                                                                    <img :src="formData[index][propKey]" alt="Preview">
+                                                                </div>
+                                                            </div>
+                                                        </template>
+
+                                                        <!-- Number Input -->
+                                                        <template
+                                                            x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue) === 'number'">
+                                                            <input type="number" x-model.number="formData[index][propKey]"
+                                                                class="editor-input">
+                                                        </template>
+
+                                                        <!-- Checkbox -->
+                                                        <template
+                                                            x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue) === 'checkbox'">
+                                                            <div class="editor-checkbox-label">
+                                                                <input type="checkbox" x-model="formData[index][propKey]"
+                                                                    class="editor-checkbox">
+                                                                <span>Enabled</span>
+                                                            </div>
+                                                        </template>
+
+                                                        <!-- Textarea -->
+                                                        <template
+                                                            x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue) === 'textarea'">
+                                                            <textarea x-model="formData[index][propKey]" rows="2" class="editor-textarea"></textarea>
+                                                        </template>
+
+                                                        <!-- HTML Input -->
+                                                        <template
+                                                            x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue) === 'html'">
+                                                            <textarea x-model="formData[index][propKey]" rows="3" class="editor-textarea editor-code"></textarea>
+                                                        </template>
                                                     </div>
-
-                                                    <!-- Nested Complex Objects -->
-                                                    <template x-if="isComplexObject(propValue) || isArray(propValue)">
-                                                        <div>
-                                                            <button
-                                                                @click="openEditor(\`\${currentPath}[\${index}].\${propKey}\`, true)"
-                                                                class="editor-edit-button">
-                                                                Edit Settings
-                                                            </button>
-                                                        </div>
-                                                    </template>
-
-                                                    <!-- Text Input (Non-Image) -->
-                                                    <template
-                                                        x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue) === 'text' && propKey !== 'image'">
-                                                        <input type="text" x-model="formData[index][propKey]"
-                                                            class="editor-input">
-                                                    </template>
-
-                                                    <!-- Image Input -->
-                                                    <template
-                                                        x-if="!isComplexObject(propValue) && !isArray(propValue) && propKey === 'image'">
-                                                        <div>
-                                                            <div class="editor-image-upload">
-                                                                <input type="file" accept="image/*"
-                                                                    @change="handleImageUpload($event, \`\${index}.\${propKey}\`)"
-                                                                    :id="'image-upload-' + index + '-' + propKey">
-                                                                <label
-                                                                    :for="'image-upload-' + index + '-' + propKey">Upload
-                                                                    Image</label>
-                                                            </div>
-                                                            <div class="editor-image-preview"
-                                                                x-show="formData[index][propKey]">
-                                                                <img :src="formData[index][propKey]" alt="Preview">
-                                                            </div>
-                                                        </div>
-                                                    </template>
-
-                                                    <!-- Number Input -->
-                                                    <template
-                                                        x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue) === 'number'">
-                                                        <input type="number" x-model.number="formData[index][propKey]"
-                                                            class="editor-input">
-                                                    </template>
-
-                                                    <!-- Checkbox -->
-                                                    <template
-                                                        x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue) === 'checkbox'">
-                                                        <div class="editor-checkbox-label">
-                                                            <input type="checkbox" x-model="formData[index][propKey]"
-                                                                class="editor-checkbox">
-                                                            <span>Enabled</span>
-                                                        </div>
-                                                    </template>
-
-                                                    <!-- Textarea -->
-                                                    <template
-                                                        x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue) === 'textarea'">
-                                                        <textarea x-model="formData[index][propKey]" rows="2" class="editor-textarea"></textarea>
-                                                    </template>
-
-                                                    <!-- HTML Input -->
-                                                    <template
-                                                        x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue) === 'html'">
-                                                        <textarea x-model="formData[index][propKey]" rows="3" class="editor-textarea editor-code"></textarea>
-                                                    </template>
-                                                </div>
+                                                </template>
                                             </template>
                                         </div>
                                     </div>
                                 </template>
-
                                 <!-- Primitive Item -->
                                 <template x-if="!isComplexObject(item) && !isArray(item)">
-                                    <input :type="getInputType(item)" x-model="formData[index]" class="editor-input">
+                                    <input :type="getInputType(item)" x-model="formData[index]" class="editor-input" x-show="expandedIndex === index">
                                 </template>
                             </div>
                         </template>
