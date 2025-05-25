@@ -401,6 +401,14 @@ document.addEventListener('alpine:init', () => {
 				document.addEventListener('click', (e) => {
 					const editElement = e.target.closest('[data-edit]');
 					if (editElement) {
+						// Check if the click was inside a button or link (but not the data-edit element itself)
+						let node = e.target;
+						while (node && node !== editElement) {
+							if (node.tagName === 'BUTTON' || node.tagName === 'A') {
+								return; // Don't open editor
+							}
+							node = node.parentElement;
+						}
 						const path = editElement.getAttribute('data-edit');
 						this.openEditor(path);
 					}
