@@ -34,7 +34,7 @@ const modalHTML = `
             </div>
 
             <!-- Modal Body -->
-            <div class="editor-modal-body">
+            <div class="editor-modal-body" spellcheck="false">
                 <!-- Error Messages -->
                 <div x-show="Object.keys(errors).length > 0" class="editor-error">
                     <template x-for="(message, key) in errors" :key="key">
