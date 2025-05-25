@@ -98,9 +98,9 @@ const modalHTML = `
                                 </template>
 
                                 <!-- Text Input (Non-Image) -->
-                                <template
-                                    x-if="!isComplexObject(value) && !isArray(value) && getInputType(value, key) === 'text' && key !== 'image'">
-                                    <input type="text" x-model="formData[key]" class="editor-input">
+                                <template x-if="!isComplexObject(value) && !isArray(value) && getInputType(value, key) === 'text' && key !== 'image'">
+                                    <input type="text" x-model="formData[key]" class="editor-input"
+                                        :@keyup="key === 'slug' ? 'formData[key] = formData[key] && formData[key].toLowerCase().replace(/[^a-z0-9\\s-]/g, '').replace(/\\s+/g, '-').replace(/-+/g, '-')' : null">
                                 </template>
 
                                 <!-- Image Input -->
@@ -243,10 +243,9 @@ const modalHTML = `
                                                         </template>
 
                                                         <!-- Text Input (Non-Image) -->
-                                                        <template
-                                                            x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue, propKey) === 'text' && propKey !== 'image'">
-                                                            <input type="text" x-model="formData[index][propKey]"
-                                                                class="editor-input">
+                                                        <template x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue, propKey) === 'text' && propKey !== 'image'">
+                                                            <input type="text" x-model="formData[index][propKey]" class="editor-input"
+                                                                :@keyup="propKey === 'slug' ? 'formData[index][propKey] = formData[index][propKey] && formData[index][propKey].toLowerCase().replace(/[^a-z0-9\\s-]/g, '').replace(/\\s+/g, '-').replace(/-+/g, '-')' : null">
                                                         </template>
 
                                                         <!-- Image Input -->
