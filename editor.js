@@ -167,7 +167,24 @@ const modalHTML = `
                         <template x-for="(item, index) in formData" :key="index">
                             <div class="editor-array-card">
                                 <div class="editor-array-header" @click="expandedIndex = expandedIndex === index ? null : index" style="cursor: pointer;">
-                                    <h5 class="editor-array-title">Item <span x-text="index + 1"></span></h5>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <svg 
+                                            xmlns="http://www.w3.org/2000/svg" 
+                                            width="16" 
+                                            height="16" 
+                                            viewBox="0 0 24 24" 
+                                            fill="none" 
+                                            stroke="currentColor" 
+                                            stroke-width="2" 
+                                            stroke-linecap="round" 
+                                            stroke-linejoin="round"
+                                            :style="expandedIndex === index ? 'transform: rotate(90deg);' : 'transform: rotate(0deg);'"
+                                            style="transition: transform 0.2s ease-in-out;"
+                                        >
+                                            <polyline points="9 18 15 12 9 6"></polyline>
+                                        </svg>
+                                        <h5 class="editor-array-title">Item <span x-text="index + 1"></span></h5>
+                                    </div>
                                     <div class="editor-button-row">
                                         <button
                                             @click.stop="if (index > 0) { const temp = formData[index]; formData[index] = formData[index-1]; formData[index-1] = temp; }"
