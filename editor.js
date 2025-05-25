@@ -156,7 +156,7 @@ const modalHTML = `
                             <h4>Items in this group (<span x-text="formData.length"></span>)</h4>
                             <div>
                                 <button
-                                    @click="if (formData.length > 0) { const template = formData[0]; const emptyItem = Object.fromEntries(Object.keys(template).map(key => [key, null])); formData.unshift(emptyItem); }"
+                                    @click="if (formData.length > 0) { const template = formData[0]; const emptyItem = Object.fromEntries(Object.keys(template).map(key => [key, null])); emptyItem.id = Date.now() + Math.random().toString(16).slice(2); formData.unshift(emptyItem); }"
                                     class="editor-edit-button" title="Add New Item at Beginning"
                                     :disabled="formData.length === 0">
                                     + Add to Beginning
@@ -299,7 +299,7 @@ const modalHTML = `
                         <div class="editor-button-row"
                             style="margin-top: 15px; display: flex; justify-content: flex-end;">
                             <button
-                                @click="if (formData.length > 0) { const template = formData[0]; const emptyItem = Object.fromEntries(Object.keys(template).map(key => [key, null])); formData.push(emptyItem); }"
+                                @click="if (formData.length > 0) { const template = formData[0]; const emptyItem = Object.fromEntries(Object.keys(template).map(key => [key, null])); emptyItem.id = Date.now() + Math.random().toString(16).slice(2); formData.push(emptyItem); }"
                                 class="editor-edit-button" :disabled="formData.length === 0">
                                 + Add to End
                             </button>
