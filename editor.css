@@ -245,9 +245,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #eee;
 }
 
 .editor-array-title {
