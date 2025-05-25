@@ -205,10 +205,6 @@ const modalHTML = `
                                         </button>
                                     </div>
                                 </div>
-                                <!-- Only show divider and spacing if expanded -->
-                                <template x-if="expandedIndex === index">
-                                    <hr style="margin: 16px 0; border: none; border-top: 1px solid #e5e7eb;" />
-                                </template>
                                 <!-- Complex Object Item -->
                                 <template x-if="isComplexObject(item)">
                                     <div x-show="expandedIndex === index" x-transition:enter="editor-fade-in" x-transition:leave="editor-fade-out">
