@@ -49,20 +49,20 @@ const modalHTML = `
                 <template x-if="!isComplexObject(formData) && !isArray(formData)">
                     <div class="editor-form-group">
                         <label class="editor-label">Value</label>
-                        <template x-if="getInputType(formData) === 'textarea'">
+                        <template x-if="getInputType(formData, currentPath.split('.').pop()) === 'textarea'">
                             <textarea x-model="formData" rows="6" class="editor-textarea"></textarea>
                         </template>
-                        <template x-if="getInputType(formData) === 'html'">
+                        <template x-if="getInputType(formData, currentPath.split('.').pop()) === 'html'">
                             <textarea x-model="formData" rows="10" class="editor-textarea editor-code"></textarea>
                         </template>
-                        <template x-if="getInputType(formData) === 'checkbox'">
+                        <template x-if="getInputType(formData, currentPath.split('.').pop()) === 'checkbox'">
                             <div class="editor-checkbox-label">
                                 <input type="checkbox" x-model="formData" class="editor-checkbox">
                                 <span>Enabled</span>
                             </div>
                         </template>
-                        <template x-if="getInputType(formData) === 'text' || getInputType(formData) === 'number'">
-                            <input :type="getInputType(formData)" x-model="formData" class="editor-input">
+                        <template x-if="getInputType(formData, currentPath.split('.').pop()) === 'text' || getInputType(formData, currentPath.split('.').pop()) === 'number'">
+                            <input :type="getInputType(formData, currentPath.split('.').pop())" x-model="formData" class="editor-input">
                         </template>
                     </div>
                 </template>
@@ -99,7 +99,7 @@ const modalHTML = `
 
                                 <!-- Text Input (Non-Image) -->
                                 <template
-                                    x-if="!isComplexObject(value) && !isArray(value) && getInputType(value) === 'text' && key !== 'image'">
+                                    x-if="!isComplexObject(value) && !isArray(value) && getInputType(value, key) === 'text' && key !== 'image'">
                                     <input type="text" x-model="formData[key]" class="editor-input">
                                 </template>
 
@@ -119,13 +119,13 @@ const modalHTML = `
 
                                 <!-- Number Input -->
                                 <template
-                                    x-if="!isComplexObject(value) && !isArray(value) && getInputType(value) === 'number'">
+                                    x-if="!isComplexObject(value) && !isArray(value) && getInputType(value, key) === 'number'">
                                     <input type="number" x-model.number="formData[key]" class="editor-input">
                                 </template>
 
                                 <!-- Checkbox -->
                                 <template
-                                    x-if="!isComplexObject(value) && !isArray(value) && getInputType(value) === 'checkbox'">
+                                    x-if="!isComplexObject(value) && !isArray(value) && getInputType(value, key) === 'checkbox'">
                                     <div class="editor-checkbox-label">
                                         <input type="checkbox" x-model="formData[key]" class="editor-checkbox">
                                         <span>Enabled</span>
@@ -134,13 +134,13 @@ const modalHTML = `
 
                                 <!-- Textarea -->
                                 <template
-                                    x-if="!isComplexObject(value) && !isArray(value) && getInputType(value) === 'textarea'">
+                                    x-if="!isComplexObject(value) && !isArray(value) && getInputType(value, key) === 'textarea'">
                                     <textarea x-model="formData[key]" rows="3" class="editor-textarea"></textarea>
                                 </template>
 
                                 <!-- HTML Input -->
                                 <template
-                                    x-if="!isComplexObject(value) && !isArray(value) && getInputType(value) === 'html'">
+                                    x-if="!isComplexObject(value) && !isArray(value) && getInputType(value, key) === 'html'">
                                     <textarea x-model="formData[key]" rows="5" class="editor-textarea editor-code"></textarea>
                                 </template>
                             </div>
@@ -156,7 +156,22 @@ const modalHTML = `
                             <h4>Items in this group (<span x-text="formData.length"></span>)</h4>
                             <div>
                                 <button
-                                    @click="if (formData.length > 0) { const template = formData[0]; const emptyItem = Object.fromEntries(Object.keys(template).map(key => [key, null])); emptyItem.id = Date.now() + Math.random().toString(16).slice(2); formData.unshift(emptyItem); }"
+                                    @click="if (formData.length > 0) { 
+                                        const template = formData[0]; 
+                                        const emptyItem = Object.fromEntries(Object.keys(template).map(key => [key, null]));
+                                        let maxId = null;
+                                        for (const item of formData) {
+                                            if (item && typeof item.id === 'number' && (maxId === null || item.id > maxId)) {
+                                                maxId = item.id;
+                                            }
+                                        }
+                                        if (maxId !== null) {
+                                            emptyItem.id = maxId + 1;
+                                        } else {
+                                            emptyItem.id = Date.now();
+                                        }
+                                        formData.unshift(emptyItem); 
+                                    }"
                                     class="editor-edit-button" title="Add New Item at Beginning"
                                     :disabled="formData.length === 0">
                                     + Add to Beginning
@@ -230,7 +245,7 @@ const modalHTML = `
 
                                                         <!-- Text Input (Non-Image) -->
                                                         <template
-                                                            x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue) === 'text' && propKey !== 'image'">
+                                                            x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue, propKey) === 'text' && propKey !== 'image'">
                                                             <input type="text" x-model="formData[index][propKey]"
                                                                 class="editor-input">
                                                         </template>
@@ -256,14 +271,14 @@ const modalHTML = `
 
                                                         <!-- Number Input -->
                                                         <template
-                                                            x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue) === 'number'">
+                                                            x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue, propKey) === 'number'">
                                                             <input type="number" x-model.number="formData[index][propKey]"
                                                                 class="editor-input">
                                                         </template>
 
                                                         <!-- Checkbox -->
                                                         <template
-                                                            x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue) === 'checkbox'">
+                                                            x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue, propKey) === 'checkbox'">
                                                             <div class="editor-checkbox-label">
                                                                 <input type="checkbox" x-model="formData[index][propKey]"
                                                                     class="editor-checkbox">
@@ -273,13 +288,13 @@ const modalHTML = `
 
                                                         <!-- Textarea -->
                                                         <template
-                                                            x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue) === 'textarea'">
+                                                            x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue, propKey) === 'textarea'">
                                                             <textarea x-model="formData[index][propKey]" rows="2" class="editor-textarea"></textarea>
                                                         </template>
 
                                                         <!-- HTML Input -->
                                                         <template
-                                                            x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue) === 'html'">
+                                                            x-if="!isComplexObject(propValue) && !isArray(propValue) && getInputType(propValue, propKey) === 'html'">
                                                             <textarea x-model="formData[index][propKey]" rows="3" class="editor-textarea editor-code"></textarea>
                                                         </template>
                                                     </div>
@@ -290,7 +305,7 @@ const modalHTML = `
                                 </template>
                                 <!-- Primitive Item -->
                                 <template x-if="!isComplexObject(item) && !isArray(item)">
-                                    <input :type="getInputType(item)" x-model="formData[index]" class="editor-input" x-show="expandedIndex === index">
+                                    <input :type="getInputType(item, currentPath.split('.').pop())" x-model="formData[index]" class="editor-input" x-show="expandedIndex === index">
                                 </template>
                             </div>
                         </template>
@@ -299,7 +314,22 @@ const modalHTML = `
                         <div class="editor-button-row"
                             style="margin-top: 15px; display: flex; justify-content: flex-end;">
                             <button
-                                @click="if (formData.length > 0) { const template = formData[0]; const emptyItem = Object.fromEntries(Object.keys(template).map(key => [key, null])); emptyItem.id = Date.now() + Math.random().toString(16).slice(2); formData.push(emptyItem); }"
+                                @click="if (formData.length > 0) { 
+                                    const template = formData[0]; 
+                                    const emptyItem = Object.fromEntries(Object.keys(template).map(key => [key, null]));
+                                    let maxId = null;
+                                    for (const item of formData) {
+                                        if (item && typeof item.id === 'number' && (maxId === null || item.id > maxId)) {
+                                            maxId = item.id;
+                                        }
+                                    }
+                                    if (maxId !== null) {
+                                        emptyItem.id = maxId + 1;
+                                    } else {
+                                        emptyItem.id = Date.now();
+                                    }
+                                    formData.push(emptyItem); 
+                                }"
                                 class="editor-edit-button" :disabled="formData.length === 0">
                                 + Add to End
                             </button>
@@ -651,15 +681,17 @@ document.addEventListener('alpine:init', () => {
 		/**
 		 * Get field type based on value
 		 * @param {*} value - Value to check
+		 * @param {string} key - The key associated with the value
 		 * @return {string} Input type
 		 */
-		getInputType(value) {
+		getInputType(value, key) {
+			if (key && ['body', 'text', 'description', 'content'].includes(key)) {
+				return 'textarea';
+			}
 			if (value === null || value === undefined) {
 				return 'text';
 			}
-
 			const type = typeof value;
-
 			switch (type) {
 				case 'boolean':
 					return 'checkbox';
@@ -668,9 +700,6 @@ document.addEventListener('alpine:init', () => {
 				case 'string':
 					if (value.startsWith('<') && value.endsWith('>')) {
 						return 'html';
-					}
-					if (value.length > 100) {
-						return 'textarea';
 					}
 					return 'text';
 				default:
