@@ -205,18 +205,16 @@ const modalHTML = `
                                     <div class="editor-button-row">
                                         <button
                                             @click.stop="if (index > 0) { const temp = formData[index]; formData[index] = formData[index-1]; formData[index-1] = temp; }"
-                                            class="editor-edit-button" title="Move Up" :disabled="index === 0">
-                                            Move Up
+                                            class="editor-icon-button" title="Move Up" :disabled="index === 0">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
                                         </button>
                                         <button
                                             @click.stop="if (index < formData.length - 1) { const temp = formData[index]; formData[index] = formData[index+1]; formData[index+1] = temp; }"
-                                            class="editor-edit-button" title="Move Down"
-                                            :disabled="index === formData.length - 1">
-                                            Move Down
+                                            class="editor-icon-button" title="Move Down" :disabled="index === formData.length - 1">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
                                         </button>
-                                        <button @click.stop="formData.splice(index, 1)" class="editor-edit-button"
-                                            title="Remove Item" :disabled="formData.length <= 1">
-                                            Remove
+                                        <button @click.stop="formData.splice(index, 1)" class="editor-icon-button" title="Remove Item" :disabled="formData.length <= 1">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
                                         </button>
                                     </div>
                                 </div>

@@ -382,3 +382,37 @@
     pointer-events: none;
     font-family: "Inter", sans-serif;
 }
+
+/* Icon button style for array controls */
+.editor-icon-button {
+    background: #f3f3f6;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+    padding: 0;
+}
+
+.editor-icon-button:last-child {
+    margin-right: 0;
+}
+
+.editor-icon-button:hover:not(:disabled) {
+    background: #e5e5ea;
+}
+
+.editor-icon-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.editor-icon-button svg {
+    display: block;
+    stroke: #222;
+}
